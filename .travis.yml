@@ -15,7 +15,7 @@ after_success:
   - docker build -t phrbshrp/multi-nginx ./nginx
   - docker build -t phrbshrp/multi-server ./server
   - docker build -t phrbshrp/multi-worker ./worker
-  - echo "$DOCKER_PASS" | docker login -u "#DOCKER_ID" --password-stdin
+  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push phrbshrp/multi-client
   - docker push phrbshrp/multi-nginx
   - docker push phrbshrp/multi-server
