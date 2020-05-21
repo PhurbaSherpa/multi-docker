@@ -1,0 +1,22 @@
+language: generic
+
+sudo: required
+services:
+  - docker
+
+before_Install:
+  - docker build -t phrbshrp/test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true phrbshrp/test npm test
+
+after_success:
+  - docker build -t phrbshrp/multi-client ./client
+  - docker build -t phrbshrp/multi-nginx ./nginx
+  - docker build -t phrbshrp/multi-server ./server
+  - docker build -t phrbshrp/multi-worker ./worker
+  - echo "$DOCKER_PASS" | docker login -u "#DOCKER_ID" --password-stdin
+  - docker push phrbshrp/multi-client
+  - docker push phrbshrp/multi-nginx
+  - docker push phrbshrp/multi-server
+  - docker push phrbshrp/multi-worker
